@@ -126,3 +126,28 @@ resource "aws_launch_template" "web_template" {
     Name = "enterprise-launch-template"
   }
 }
+# --- Phase 4: The Automation Engine ---
+
+# 7. Auto Scaling Group (The Fleet Manager)
+resource "aws_autoscaling_group" "web_asg" {
+  name                = "enterprise-web-asg"
+  vpc_zone_identifier = [aws_subnet.public_subnet_1.id]
+  
+  # The Scaling Rules
+  desired_capacity    = 2
+  max_size            = 3
+  min_size            = 1
+
+  # Pointing to your Phase 3 Blueprint
+  launch_template {
+    id      = aws_launch_template.web_template.id
+    version = "$Latest"
+  }
+
+  # This automatically names every server the ASG builds
+  tag {
+    key                 = "Name"
+    value               = "enterprise-asg-web-server"
+    propagate_at_launch = true
+  }
+}

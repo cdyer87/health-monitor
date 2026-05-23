@@ -89,3 +89,40 @@ resource "aws_security_group" "web_sg" {
     Name = "enterprise-security-group"
   }
 }
+# --- Phase 3: The Server Blueprint ---
+
+# Find the latest Amazon Linux 2 Image dynamically
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+}
+
+# 6. Launch Template (The Recipe)
+resource "aws_launch_template" "web_template" {
+  name_prefix   = "enterprise-web-"
+  image_id      = data.aws_ami.amazon_linux.id
+  instance_type = "t2.micro" # Free-tier eligible!
+
+  # Attach the bouncer we made in Phase 2
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
+
+  # The Boot Script: Install Apache Web Server and turn it on
+  user_data = base64encode(<<-EOF
+    #!/bin/bash
+    yum update -y
+    yum install -y httpd
+    systemctl start httpd
+    systemctl enable httpd
+    echo "<h1>Success! Your Enterprise Architecture is running!</h1>" > /var/www/html/index.html
+  EOF
+  )
+
+  tags = {
+    Name = "enterprise-launch-template"
+  }
+}

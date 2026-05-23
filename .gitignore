@@ -1,3 +1,12 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Python & Archives
+venv/
+__pycache__/
+*.zip
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -216,3 +225,5 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Other local projects
+scipy/

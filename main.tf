@@ -52,3 +52,40 @@ resource "aws_route_table_association" "public_assoc" {
   subnet_id      = aws_subnet.public_subnet_1.id
   route_table_id = aws_route_table.public_rt.id
 }
+# 5. Security Group (The Bouncers)
+resource "aws_security_group" "web_sg" {
+  name        = "enterprise-web-sg"
+  description = "Allow HTTP and SSH traffic"
+  vpc_id      = aws_vpc.main_network.id
+
+  # Inbound: Allow Web Traffic
+  ingress {
+    description = "Allow HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # 0.0.0.0/0 means "from any IP address"
+  }
+
+  # Inbound: Allow Secure Admin Access
+  ingress {
+    description = "Allow SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] 
+  }
+
+  # Outbound: Allow servers to talk to the internet
+  egress {
+    description = "Allow all outbound"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"          # -1 means "all protocols"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "enterprise-security-group"
+  }
+}

@@ -18,6 +18,14 @@ I architected and deployed a comprehensive monitoring stack using Terraform to m
 * **Proactive Incident Response:** Reduced Mean-Time-To-Detection (MTTD) by automating alerts, ensuring the team is notified the second a threshold is breached.
 * **Audit Readiness:** Established a secure, long-term log retention strategy using S3, satisfying standard compliance and security audit requirements.
 
+* ## Core Technologies
+* **Cloud Provider:** AWS
+* **Infrastructure as Code:** Terraform
+* **Monitoring & Observability:** AWS CloudWatch
+* **Event Routing:** AWS SNS
+* **Storage:** AWS S3
+
+
 * ## Simulated Case Study: High CPU Utilization Incident
 
 **Situation:** At 2:00 AM on a weekend, a primary backend database experienced an unexpected surge in traffic, causing CPU utilization to spike to 99% and threatening overall application uptime.
@@ -28,9 +36,3 @@ I architected and deployed a comprehensive monitoring stack using Terraform to m
 
 **Result:** The on-call engineer received the automated alert instantly, complete with links to the exact CloudWatch dashboards showing the spike. They were able to proactively scale the database instance resources and stabilize the system within 15 minutes, preventing an outright crash and maintaining a 99.9% uptime SLA.
 
-## Core Technologies
-* **Cloud Provider:** AWS
-* **Infrastructure as Code:** Terraform
-* **Monitoring & Observability:** AWS CloudWatch
-* **Event Routing:** AWS SNS
-* **Storage:** AWS S3

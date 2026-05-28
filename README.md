@@ -26,7 +26,7 @@ I architected and deployed a comprehensive monitoring stack using Terraform to m
 * **Storage:** AWS S3
 
 
-* ## Simulated Case Study: High CPU Utilization Incident
+## Simulated Case Study: High CPU Utilization Incident
 
 **Situation:** At 2:00 AM on a weekend, a primary backend database experienced an unexpected surge in traffic, causing CPU utilization to spike to 99% and threatening overall application uptime.
 

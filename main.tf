@@ -10,7 +10,7 @@ resource "aws_vpc" "main_network" {
     Environment = "production-ready"
     Project     = "AutoScalingWebStack"
   }
-} # <--- This is the closing bracket your new code needed to be below!
+} # 
 
 # 1. Internet Gateway (The front door)
 resource "aws_internet_gateway" "igw" {
@@ -107,6 +107,7 @@ resource "aws_launch_template" "web_template" {
   name_prefix   = "enterprise-web-"
   image_id      = data.aws_ami.amazon_linux.id
   instance_type = "t2.micro" # Free-tier eligible!
+  key_name               = "Amazonkey"
 
   # Attach the bouncer we made in Phase 2
   vpc_security_group_ids = [aws_security_group.web_sg.id]
@@ -385,18 +386,5 @@ resource "aws_lb_listener" "https" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.web_tg.arn
-  }
-}
-
-# 4. Point your domain to the Load Balancer!
-resource "aws_route53_record" "www" {
-  zone_id = data.aws_route53_zone.main.zone_id
-  name    = "goodtimes.click"
-  type    = "A"
-
-  alias {
-    name                   = aws_lb.web_alb.dns_name
-    zone_id                = aws_lb.web_alb.zone_id
-    evaluate_target_health = true
   }
 }

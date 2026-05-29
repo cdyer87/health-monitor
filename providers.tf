@@ -1,12 +1,26 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
+# The Primary Provider (East Coast)
+# If we don't specify an alias, Terraform defaults to this one.
+provider "aws" {
+  region = "us-east-1"
+  
+  default_tags {
+    tags = {
+      Project     = "health-monitor"
+      Environment = terraform.workspace
     }
   }
 }
 
+# The Secondary Backup Provider (West Coast)
+# We must explicitly use the 'alias' keyword to call this provider.
 provider "aws" {
-  region = "us-east-1" # You can change this to your preferred region
+  alias  = "west"
+  region = "us-west-2"
+
+  default_tags {
+    tags = {
+      Project     = "health-monitor"
+      Environment = terraform.workspace
+    }
+  }
 }
